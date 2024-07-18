@@ -1,0 +1,275 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareerPhotoMagicAI</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        header {
+            background-color: #008080;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        header .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        header .logo img {
+            height: 50px;
+            margin-right: 10px;
+        }
+
+        header .logo h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        header nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            font-size: 18px;
+        }
+
+        main {
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .welcome-section h2 {
+            color: #008080;
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .welcome-section p {
+            font-size: 18px;
+            color: #555;
+            margin-bottom: 30px;
+        }
+
+        .form-container {
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .form-group {
+            margin: 20px 0;
+            text-align: left;
+            width: 100%;
+        }
+
+        .form-group label {
+            font-size: 18px;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .form-check-inline {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .form-check {
+            display: flex;
+            align-items: center;
+        }
+
+        .form-check input {
+            margin-right: 5px;
+        }
+
+        .form-control {
+            padding: 10px;
+            width: 100%;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .name-input {
+            margin: 30px 0;
+            width: 100%;
+        }
+
+        .name-input label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        .name-input input {
+            padding: 10px;
+            width: 100%;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .upload-section {
+            margin-top: 30px;
+            width: 100%;
+            text-align: left;
+        }
+
+        .upload-section label {
+            display: block;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .upload-section input[type="file"] {
+            margin-bottom: 20px;
+        }
+
+        .upload-section button {
+            background-color: #FF6F61;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .upload-section button:hover {
+            background-color: #e65b54;
+        }
+
+        .messages {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 5px;
+            color: white;
+            font-size: 18px;
+        }
+
+        .messages.success {
+            background-color: #4CAF50;
+        }
+
+        .messages.error {
+            background-color: #f44336;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="{% static 'images/logo2.png' %}" alt="Logo">
+            <h1>CareerPhotoMagicAI</h1>
+        </div>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/minipage">MiniPage</a>
+        </nav>
+    </header>
+    <main>
+        <section class="welcome-section">
+            <h2><center>Welcome to CareerPhotoMagic</center></h2>
+            <p>Transform your casual photos into professional images perfect for your CV and LinkedIn profile.</p>
+            {% if success %}
+                <div class="messages success">{{ success }}</div>
+                <div class="messages success">{{ message }}</div>
+            {% elif error %}
+                <div class="messages error">{{ error }}</div>
+            {% endif %}
+            {% if not success %}
+            <form method="POST" action="{% url 'mini_upload' %}" enctype="multipart/form-data" class="form-container">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label>Which type of product:</label>
+                    <div class="form-check-inline">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="product_type" id="clothes" value="clothes">
+                            <label class="form-check-label" for="clothes">Clothes</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="product_type" id="footwear" value="footwear">
+                            <label class="form-check-label" for="footwear">Footwear</label>
+                        </div>
+                    </div>
+                </div>
+                
+
+               
+
+                <div class="name-input">
+                    <label for="name">Enter your product name:</label>
+                    <input type="text" id="name" name="name" placeholder="Your product name" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Gender:</label>
+                    <div class="form-check-inline">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="gender" id="male" value="Male">
+                            <label class="form-check-label" for="male">Male</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="gender" id="female" value="Female">
+                            <label class="form-check-label" for="female">Female</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Skin Tone:</label>
+                    <div class="form-check-inline">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="skin_tone" id="black" value="Black">
+                            <label class="form-check-label" for="black">Black</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="skin_tone" id="white" value="White">
+                            <label class="form-check-label" for="white">White</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="age">Age:</label>
+                    <select class="form-control" id="age" name="age">
+                        <option>5-10</option>
+                        <option>11-20</option>
+                        <option>21-30</option>
+                        <option>31-40</option>
+                        <option>41-50</option>
+                        <option>51-60</option>
+                        <option>61-70</option>
+                        <option>71-80</option>
+                    </select>
+                </div>
+
+                <div class="upload-section">
+                    <label for="upload">upload product Images with multiple angles(at least 5):</label>
+                    <input type="file" id="upload" name="upload" multiple required>
+                    <button type="submit">Upload</button>
+                </div>
+            </form>
+            {% endif %}
+        </section>
+    </main>
+</body>
+</html>
